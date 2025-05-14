@@ -19,9 +19,17 @@ namespace ITSupportAPI.Controllers
         }
 
         [HttpGet(Name = "GetTickets")]
-        public IEnumerable<Ticket> Get()
+        public IEnumerable<Ticket> Get([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var tickets = _context.Tickets.ToList();
+            if (page <= 0 || pageSize <= 0)
+            {
+                throw new ArgumentException("Page and pageSize must be greater than zero.");
+            }
+
+            var tickets = _context.Tickets
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
             return tickets;
         }
     }

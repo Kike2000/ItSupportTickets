@@ -19,9 +19,17 @@ namespace ITSupportAPI.Controllers
         }
 
         [HttpGet(Name = "GetUsers")]
-        public IEnumerable<User> Get()
+        public IEnumerable<User> Get([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var users = _context.Users.ToList();
+            if (page < 1 || pageSize < 1)
+            {
+                throw new ArgumentException("Page and pageSize must be greater than 0.");
+            }
+
+            var users = _context.Users
+                                .Skip((page - 1) * pageSize)
+                                .Take(pageSize)
+                                .ToList();
             return users;
         }
     }

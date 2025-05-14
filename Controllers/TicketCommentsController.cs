@@ -19,7 +19,7 @@ namespace ITSupportAPI.Controllers
         }
 
         [HttpGet(Name = "GetTicketComments")]
-        public IEnumerable<Ticket> Get()
+        public IEnumerable<TicketComment> Get()
         {
             var ticketComments = _context.TicketComments.ToList();
             return ticketComments;
